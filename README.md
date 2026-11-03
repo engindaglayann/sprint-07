@@ -5,28 +5,7 @@
 - **Öğrenci Adı:** Engin Dağlayan
 - **Öğrenci Numarası:** 2416501069
 
----
 
-## 🚀 Kurulum ve Çalıştırma
-
-Projeyi yerel ortamda çalıştırmak için aşağıdaki adımları izleyin:
-
-```bash
-# Frontend klasörüne geçiş yapın
-cd frontend
-
-# Bağımlılıkları yükleyin
-npm install
-
-# Geliştirme sunucusunu başlatın
-npm run dev
-
-# Üretim derlemesi (build) almak için
-npm run build
-
-# Kod denetimi (lint) için
-npm run lint
-```
 
 ---
 
