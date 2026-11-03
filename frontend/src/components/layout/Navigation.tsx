@@ -1,41 +1,24 @@
-import type { PageName } from "../../types/page";
+import { NavLink } from "react-router-dom";
 
-interface NavigationProps {
-    current: PageName;
-    onNavigate: (page: PageName) => void;
-}
+const menu = [
+    { to: "/", label: "Ana Sayfa" },
+    { to: "/events", label: "Etkinlikler" },
+    { to: "/admin", label: "Yönetim" },
+    { to: "/login", label: "Giriş" },
+];
 
-function Navigation({ current, onNavigate }: NavigationProps) {
-    const linkStyle = (isActive: boolean) => ({
-        fontWeight: isActive ? "bold" : "normal",
-        color: "#333", // Koyu gri metin rengi
-        marginRight: "15px",
-        textDecoration: "none"
-    });
-
+function Navigation() {
     return (
-        <nav className="menu" style={{ padding: "10px 0", marginBottom: "20px", borderBottom: "1px solid #ddd" }}>
-            <a 
-                href="#" 
-                onClick={(e) => { e.preventDefault(); onNavigate("home"); }} 
-                style={linkStyle(current === "home")}
-            >
-                Ana Sayfa
-            </a>
-            <a 
-                href="#" 
-                onClick={(e) => { e.preventDefault(); onNavigate("events"); }} 
-                style={linkStyle(current === "events")}
-            >
-                Etkinlikler
-            </a>
-            <a 
-                href="#" 
-                onClick={(e) => { e.preventDefault(); onNavigate("add"); }} 
-                style={linkStyle(current === "add")}
-            >
-                Ekle
-            </a>
+        <nav className="menu">
+            <ul>
+                {menu.map((item) => (
+                    <li key={item.to}>
+                        <NavLink to={item.to} end={item.to === "/"}>
+                            {item.label}
+                        </NavLink>
+                    </li>
+                ))}
+            </ul>
         </nav>
     );
 }

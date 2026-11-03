@@ -1,0 +1,64 @@
+import { Link } from "react-router-dom";
+import { useEvents } from "../context/EventsContext";
+import { formatDate } from "../utils/format-date";
+
+function AdminPage() {
+    const { events, deleteEvent } = useEvents();
+
+    function handleDelete(id: string, title: string) {
+        if (window.confirm(`"${title}" silinsin mi?`)) {
+            deleteEvent(id);
+        }
+    }
+
+    return (
+        <>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                <h2 className="bolum-baslik" style={{ margin: 0 }}>Etkinlik Yönetimi</h2>
+                <Link to="/admin/new" className="buton">
+                    + Yeni etkinlik
+                </Link>
+            </div>
+
+            {events.length === 0 ? (
+                <p>Henüz etkinlik yok.</p>
+            ) : (
+                <table className="tablo">
+                    <thead>
+                        <tr>
+                            <th>Etkinlik</th>
+                            <th>Tarih</th>
+                            <th>Kategori</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {events.map((event) => (
+                            <tr key={event.id}>
+                                <td data-baslik="Etkinlik">{event.title}</td>
+                                <td data-baslik="Tarih">{formatDate(event.date)}</td>
+                                <td data-baslik="Kategori">
+                                    <span className="kart-kategori">{event.category}</span>
+                                </td>
+                                <td className="islemler" data-baslik="İşlemler">
+                                    <Link to={`/admin/${event.id}/edit`} className="buton">
+                                        Düzenle
+                                    </Link>
+                                    <button
+                                        type="button"
+                                        className="buton buton-sil"
+                                        onClick={() => handleDelete(event.id, event.title)}
+                                    >
+                                        Sil
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </>
+    );
+}
+
+export default AdminPage;

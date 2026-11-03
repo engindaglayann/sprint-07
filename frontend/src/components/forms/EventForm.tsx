@@ -1,76 +1,167 @@
-import { useState } from "react";
-import type { Category, CampusEvent } from "../../types/campus-event";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Link } from "react-router-dom";
+import type { EventFormData, EventFormErrors, Category } from "../../types/campus-event";
+import { validateEvent } from "../../utils/validate-event";
 
 interface EventFormProps {
-    onSubmit: (formData: { title: string; category: Category; date: string; description: string }) => void;
-    categories: Category[];
-    initialData?: CampusEvent;
+    initialData: EventFormData;
+    submitText: string;
+    onSubmit: (data: EventFormData) => void;
 }
 
-function EventForm({ onSubmit, categories, initialData }: EventFormProps) {
-    const [title, setTitle] = useState(initialData?.title || "");
-    const [category, setCategory] = useState<Category | "">(initialData?.category || "");
-    const [date, setDate] = useState(initialData?.date || "");
-    const [description, setDescription] = useState(initialData?.description || "");
+const CATEGORIES: Category[] = ["Seminer", "Atölye", "Söyleşi", "Yarışma"];
+
+function EventForm({ initialData, submitText, onSubmit }: EventFormProps) {
+    const [data, setData] = useState<EventFormData>(initialData);
+    const [errors, setErrors] = useState<EventFormErrors>({});
+
+    function handleChange(
+        e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+        });
+    }
+
+    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const found = validateEvent(data);
+        setErrors(found);
+        if (Object.keys(found).length === 0) {
+            onSubmit(data);
+        }
+    }
 
     return (
-        <form 
-            className="form" 
-            onSubmit={(e) => { 
-                e.preventDefault(); 
-                if (!title || !category || !date) {
-                    alert("Lütfen zorunlu alanları doldurun.");
-                    return;
-                }
-                onSubmit({ 
-                    title, 
-                    category: category as Category, 
-                    date, 
-                    description 
-                }); 
-            }}
-        >
-            <label htmlFor="title">Etkinlik Adı</label>
-            <input 
-                id="title" 
-                type="text" 
-                maxLength={80} 
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
-                required 
-            />
-            
-            <label htmlFor="cat">Kategori</label>
-            <select 
-                id="cat" 
-                value={category} 
-                onChange={(e) => setCategory(e.target.value as Category)} 
-                required
-            >
-                <option value="">Seçiniz</option>
-                {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                ))}
-            </select>
+        <form className="form" onSubmit={handleSubmit} noValidate>
+            <div className="alan">
+                <label htmlFor="title">Etkinlik adı</label>
+                <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    value={data.title}
+                    onChange={handleChange}
+                    aria-invalid={errors.title ? true : undefined}
+                />
+                <span className="hata-metni">{errors.title}</span>
+            </div>
 
-            <label htmlFor="date">Tarih</label>
-            <input 
-                id="date" 
-                type="date" 
-                value={date} 
-                onChange={(e) => setDate(e.target.value)} 
-                required 
-            />
+            <div className="alan">
+                <label htmlFor="category">Kategori</label>
+                <select
+                    id="category"
+                    name="category"
+                    value={data.category}
+                    onChange={handleChange}
+                    aria-invalid={errors.category ? true : undefined}
+                >
+                    <option value="">Seçin...</option>
+                    {CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                            {cat}
+                        </option>
+                    ))}
+                </select>
+                <span className="hata-metni">{errors.category}</span>
+            </div>
 
-            <label htmlFor="desc">Açıklama</label>
-            <textarea 
-                id="desc" 
-                rows={5} 
-                value={description} 
-                onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-            
-            <button type="submit">{initialData ? "Güncelle" : "Kaydet"}</button>
+            <div className="alan">
+                <label htmlFor="date">Tarih</label>
+                <input
+                    id="date"
+                    name="date"
+                    type="date"
+                    value={data.date}
+                    onChange={handleChange}
+                    aria-invalid={errors.date ? true : undefined}
+                />
+                <span className="hata-metni">{errors.date}</span>
+            </div>
+
+            <div className="alan">
+                <label htmlFor="time">Saat</label>
+                <input
+                    id="time"
+                    name="time"
+                    type="time"
+                    value={data.time}
+                    onChange={handleChange}
+                    aria-invalid={errors.time ? true : undefined}
+                />
+                <span className="hata-metni">{errors.time}</span>
+            </div>
+
+            <div className="alan">
+                <label htmlFor="location">Yer</label>
+                <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    value={data.location}
+                    onChange={handleChange}
+                    aria-invalid={errors.location ? true : undefined}
+                />
+                <span className="hata-metni">{errors.location}</span>
+            </div>
+
+            <div className="alan">
+                <label htmlFor="capacity">Kontenjan</label>
+                <input
+                    id="capacity"
+                    name="capacity"
+                    type="number"
+                    min="1"
+                    max="1000"
+                    value={data.capacity}
+                    onChange={handleChange}
+                    aria-invalid={errors.capacity ? true : undefined}
+                />
+                <span className="hata-metni">{errors.capacity}</span>
+            </div>
+
+            <div className="alan">
+                <label htmlFor="description">Açıklama</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows={4}
+                    value={data.description}
+                    onChange={handleChange}
+                    aria-invalid={errors.description ? true : undefined}
+                />
+                <span className="hata-metni">{errors.description}</span>
+            </div>
+
+            <div className="alan">
+                <label htmlFor="image">Afiş URL (isteğe bağlı)</label>
+                <input
+                    id="image"
+                    name="image"
+                    type="url"
+                    placeholder="https://..."
+                    value={data.image || ""}
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div className="form-butonlar">
+                <button type="submit" className="buton">
+                    {submitText}
+                </button>
+                <Link
+                    to="/admin"
+                    className="buton"
+                    style={{
+                        background: "transparent",
+                        color: "var(--renk-metin)",
+                        borderColor: "var(--renk-kenar)",
+                    }}
+                >
+                    İptal
+                </Link>
+            </div>
         </form>
     );
 }

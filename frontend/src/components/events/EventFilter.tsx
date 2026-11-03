@@ -11,16 +11,17 @@ interface EventFilterProps {
 function EventFilter({ searchText, category, categories, onSearchChange, onCategoryChange }: EventFilterProps) {
     return (
         <form className="filtre" onSubmit={(e) => e.preventDefault()}>
-            <div>
+            <div className="alan">
                 <label htmlFor="arama">Etkinlik ara</label>
                 <input 
                     id="arama" 
                     type="search" 
+                    placeholder="Başlık veya açıklamada ara..."
                     value={searchText} 
                     onChange={(e) => onSearchChange(e.target.value)} 
                 />
             </div>
-            <div>
+            <div className="alan">
                 <label htmlFor="kategori-filtre">Kategori</label>
                 <select 
                     id="kategori-filtre" 
@@ -28,7 +29,7 @@ function EventFilter({ searchText, category, categories, onSearchChange, onCateg
                     onChange={(e) => onCategoryChange(e.target.value as Category | "")}
                 >
                     <option value="">Tümü</option>
-                    {categories.map(cat => (
+                    {categories.map((cat) => (
                         <option key={cat} value={cat}>{cat}</option>
                     ))}
                 </select>
