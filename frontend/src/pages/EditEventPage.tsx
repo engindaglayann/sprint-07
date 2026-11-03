@@ -8,24 +8,15 @@ function EditEventPage() {
     const { id } = useParams();
     const { events, updateEvent } = useEvents();
     const navigate = useNavigate();
-
     const event = findEventById(events, id ?? "");
+
     if (!event) return <NotFoundPage />;
 
     return (
         <>
-            <h2 className="bolum-baslik">Etkinliği Güncelle</h2>
+            <h2 className="bolum-baslik">Etkinlik Güncelle</h2>
             <EventForm
-                initialData={{
-                    title: event.title,
-                    category: event.category,
-                    date: event.date,
-                    time: event.time,
-                    location: event.location,
-                    capacity: String(event.capacity),
-                    description: event.description,
-                    image: event.image || "",
-                }}
+                initialData={{ ...event, capacity: String(event.capacity) }}
                 submitText="Güncelle"
                 onSubmit={(data) => {
                     updateEvent(event.id, data);

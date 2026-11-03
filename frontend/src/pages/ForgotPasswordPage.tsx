@@ -15,37 +15,33 @@ function ForgotPasswordPage() {
 
     return (
         <>
-            <h2 className="bolum-baslik">Şifremi Unuttum</h2>
-            <p>Şifrenizi sıfırlamak için kayıtlı e-posta adresinizi girin.</p>
-            <form className="form" onSubmit={handleSubmit} noValidate>
-                <div className="alan">
+            <p>Kayıtlı e-posta adresinizi yazın, şifre yenileme bağlantısı gönderelim.</p>
+            {sent && (
+                <p className="mesaj mesaj-basari">
+                    Bağlantı {email} adresine gönderildi (demo).
+                </p>
+            )}
+            <form className="form" noValidate onSubmit={handleSubmit}>
+                <p className="alan">
                     <label htmlFor="email">E-posta</label>
                     <input
-                        id="email"
                         type="email"
+                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         aria-invalid={error ? true : undefined}
                     />
                     <span className="hata-metni">{error}</span>
-                </div>
-
-                <div className="form-butonlar">
+                </p>
+                <p className="form-butonlar">
                     <button type="submit" className="buton">
-                        Sıfırlama Bağlantısı Gönder
+                        Bağlantı gönder
                     </button>
-                </div>
-
-                {sent && (
-                    <div className="mesaj mesaj-basari">
-                        <p>Bağlantı {email} adresine gönderildi (demo).</p>
-                    </div>
-                )}
-
-                <div className="form-baglantilar">
-                    <Link to="/login">&larr; Girişe dön</Link>
-                </div>
+                </p>
             </form>
+            <p className="form-baglantilar">
+                <Link to="/login">← Girişe dön</Link>
+            </p>
         </>
     );
 }

@@ -2,38 +2,40 @@ import type { Category } from "../../types/campus-event";
 
 interface EventFilterProps {
     searchText: string;
+    onSearchChange: (text: string) => void;
     category: Category | "";
     categories: Category[];
-    onSearchChange: (text: string) => void;
     onCategoryChange: (cat: Category | "") => void;
 }
 
-function EventFilter({ searchText, category, categories, onSearchChange, onCategoryChange }: EventFilterProps) {
+function EventFilter({ searchText, onSearchChange, category, categories, onCategoryChange }: EventFilterProps) {
     return (
-        <form className="filtre" onSubmit={(e) => e.preventDefault()}>
-            <div className="alan">
+        <form className="filtre" role="search" onSubmit={(e) => e.preventDefault()}>
+            <p className="alan">
                 <label htmlFor="arama">Etkinlik ara</label>
-                <input 
-                    id="arama" 
-                    type="search" 
-                    placeholder="Başlık veya açıklamada ara..."
-                    value={searchText} 
-                    onChange={(e) => onSearchChange(e.target.value)} 
+                <input
+                    type="search"
+                    id="arama"
+                    placeholder="Örn. atölye, kariyer"
+                    value={searchText}
+                    onChange={(e) => onSearchChange(e.target.value)}
                 />
-            </div>
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="kategori-filtre">Kategori</label>
-                <select 
-                    id="kategori-filtre" 
-                    value={category} 
+                <select
+                    id="kategori-filtre"
+                    value={category}
                     onChange={(e) => onCategoryChange(e.target.value as Category | "")}
                 >
                     <option value="">Tümü</option>
                     {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
+                        <option key={cat} value={cat}>
+                            {cat}
+                        </option>
                     ))}
                 </select>
-            </div>
+            </p>
         </form>
     );
 }

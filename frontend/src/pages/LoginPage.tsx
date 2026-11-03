@@ -10,63 +10,52 @@ function LoginPage() {
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const found: { email?: string; password?: string } = {};
-
-        if (!email.includes("@")) {
-            found.email = "Geçerli bir e-posta adresi girin.";
-        }
-        if (password.length < 6) {
-            found.password = "Şifre en az 6 karakter olmalı.";
-        }
-
+        if (!email.includes("@")) found.email = "Geçerli bir e-posta girin.";
+        if (password.length < 6) found.password = "Şifre en az 6 karakter olmalı.";
         setErrors(found);
         setSent(Object.keys(found).length === 0);
     }
 
     return (
         <>
-            <h2 className="bolum-baslik">Giriş Yap</h2>
-            <form className="form" onSubmit={handleSubmit} noValidate>
-                <div className="alan">
+            {sent && (
+                <p className="mesaj mesaj-basari">
+                    Form geçerli. Gerçek giriş Sprint 10'da eklenecek.
+                </p>
+            )}
+            <form className="form" noValidate onSubmit={handleSubmit}>
+                <p className="alan">
                     <label htmlFor="email">E-posta</label>
                     <input
-                        id="email"
                         type="email"
+                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         aria-invalid={errors.email ? true : undefined}
                     />
                     <span className="hata-metni">{errors.email}</span>
-                </div>
-
-                <div className="alan">
+                </p>
+                <p className="alan">
                     <label htmlFor="password">Şifre</label>
                     <input
-                        id="password"
                         type="password"
+                        id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         aria-invalid={errors.password ? true : undefined}
                     />
                     <span className="hata-metni">{errors.password}</span>
-                </div>
-
-                <div className="form-butonlar">
+                </p>
+                <p className="form-butonlar">
                     <button type="submit" className="buton">
-                        Giriş Yap
+                        Giriş yap
                     </button>
-                </div>
-
-                {sent && (
-                    <div className="mesaj mesaj-basari">
-                        <p>Gerçek giriş Sprint 10'da.</p>
-                    </div>
-                )}
-
-                <div className="form-baglantilar">
-                    <Link to="/forgot-password">Şifremi unuttum</Link>
-                    <Link to="/register">Kayıt ol</Link>
-                </div>
+                </p>
             </form>
+            <p className="form-baglantilar">
+                <Link to="/forgot-password">Şifremi unuttum</Link>
+                <Link to="/register">Hesabın yok mu? Kayıt ol</Link>
+            </p>
         </>
     );
 }

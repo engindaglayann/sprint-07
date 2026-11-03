@@ -1,110 +1,86 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 
-interface RegisterErrors {
-    name?: string;
-    email?: string;
-    password?: string;
-    password2?: string;
-}
-
 function RegisterPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
-    const [errors, setErrors] = useState<RegisterErrors>({});
+    const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string; password2?: string }>({});
     const [sent, setSent] = useState(false);
 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const found: RegisterErrors = {};
-
-        if (name.trim().length < 3) {
-            found.name = "Ad soyad en az 3 karakter olmalı.";
-        }
-        if (!email.includes("@")) {
-            found.email = "Geçerli bir e-posta adresi girin.";
-        }
-        if (password.length < 6) {
-            found.password = "Şifre en az 6 karakter olmalı.";
-        }
-        if (password2 !== password) {
-            found.password2 = "Şifreler aynı değil.";
-        }
-
+        const found: { name?: string; email?: string; password?: string; password2?: string } = {};
+        if (name.trim().length < 3) found.name = "Ad soyad en az 3 karakter olmalı.";
+        if (!email.includes("@")) found.email = "Geçerli bir e-posta girin.";
+        if (password.length < 6) found.password = "Şifre en az 6 karakter olmalı.";
+        if (password2 !== password) found.password2 = "Şifreler aynı değil.";
         setErrors(found);
         setSent(Object.keys(found).length === 0);
     }
 
     return (
         <>
-            <h2 className="bolum-baslik">Kayıt Ol</h2>
-            <form className="form" onSubmit={handleSubmit} noValidate>
-                <div className="alan">
+            {sent && (
+                <p className="mesaj mesaj-basari">
+                    Form geçerli. Gerçek kayıt Sprint 10'da eklenecek.
+                </p>
+            )}
+            <form className="form" noValidate onSubmit={handleSubmit}>
+                <p className="alan">
                     <label htmlFor="name">Ad Soyad</label>
                     <input
-                        id="name"
                         type="text"
+                        id="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         aria-invalid={errors.name ? true : undefined}
                     />
                     <span className="hata-metni">{errors.name}</span>
-                </div>
-
-                <div className="alan">
+                </p>
+                <p className="alan">
                     <label htmlFor="email">E-posta</label>
                     <input
-                        id="email"
                         type="email"
+                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         aria-invalid={errors.email ? true : undefined}
                     />
                     <span className="hata-metni">{errors.email}</span>
-                </div>
-
-                <div className="alan">
+                </p>
+                <p className="alan">
                     <label htmlFor="password">Şifre</label>
                     <input
-                        id="password"
                         type="password"
+                        id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         aria-invalid={errors.password ? true : undefined}
                     />
                     <span className="hata-metni">{errors.password}</span>
-                </div>
-
-                <div className="alan">
-                    <label htmlFor="password2">Şifre (Tekrar)</label>
+                </p>
+                <p className="alan">
+                    <label htmlFor="password2">Şifre (tekrar)</label>
                     <input
-                        id="password2"
                         type="password"
+                        id="password2"
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}
                         aria-invalid={errors.password2 ? true : undefined}
                     />
                     <span className="hata-metni">{errors.password2}</span>
-                </div>
-
-                <div className="form-butonlar">
+                </p>
+                <p className="form-butonlar">
                     <button type="submit" className="buton">
-                        Kayıt Ol
+                        Kayıt ol
                     </button>
-                </div>
-
-                {sent && (
-                    <div className="mesaj mesaj-basari">
-                        <p>Kayıt başarılı (demo). Gerçek kayıt Sprint 10'da.</p>
-                    </div>
-                )}
-
-                <div className="form-baglantilar">
-                    <Link to="/login">Zaten hesabın var mı? Giriş yap</Link>
-                </div>
+                </p>
             </form>
+            <p className="form-baglantilar">
+                <Link to="/login">Zaten hesabın var mı? Giriş yap</Link>
+            </p>
         </>
     );
 }

@@ -3,7 +3,7 @@ import { useEvents } from "../context/EventsContext";
 import type { EventFormData } from "../types/campus-event";
 import EventForm from "../components/forms/EventForm";
 
-const emptyForm: EventFormData = {
+const initialData: EventFormData = {
     title: "",
     category: "",
     date: "",
@@ -11,7 +11,6 @@ const emptyForm: EventFormData = {
     location: "",
     capacity: "",
     description: "",
-    image: "",
 };
 
 function AddEventPage() {
@@ -19,17 +18,14 @@ function AddEventPage() {
     const navigate = useNavigate();
 
     return (
-        <>
-            <h2 className="bolum-baslik">Yeni Etkinlik Ekle</h2>
-            <EventForm
-                initialData={emptyForm}
-                submitText="Kaydet"
-                onSubmit={(data) => {
-                    addEvent(data);
-                    navigate("/admin");
-                }}
-            />
-        </>
+        <EventForm
+            initialData={initialData}
+            submitText="Kaydet"
+            onSubmit={(data) => {
+                addEvent(data);
+                navigate("/admin");
+            }}
+        />
     );
 }
 

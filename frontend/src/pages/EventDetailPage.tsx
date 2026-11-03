@@ -9,14 +9,7 @@ function EventDetailPage() {
     const { events } = useEvents();
     const event = findEventById(events, id ?? "");
 
-    if (!event) return <NotFoundPage />;
-
-    return (
-        <>
-            <h2 className="bolum-baslik">{event.title}</h2>
-            <EventDetail event={event} />
-        </>
-    );
+    return event ? <EventDetail event={event} /> : <NotFoundPage />;
 }
 
 export default EventDetailPage;

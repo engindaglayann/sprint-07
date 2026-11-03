@@ -12,39 +12,38 @@ function EventDetail({ event }: EventDetailProps) {
             <div className="detay-ust">
                 {event.image && (
                     <figure>
-                        <img 
-                            src={event.image} 
-                            alt={event.title} 
-                            style={{ width: "100%", maxHeight: "400px", objectFit: "cover", borderRadius: "8px" }} 
-                        />
-                        <figcaption>{event.title}</figcaption>
+                        <img src={event.image} alt={`${event.title} afişi`} width="480" height="270" />
+                        <figcaption>{event.title} afişi</figcaption>
                     </figure>
                 )}
-                <aside className="kunye">
-                    <h2>Etkinlik Bilgileri</h2>
+                <section className="kunye">
+                    <h2>Etkinlik Künyesi</h2>
                     <dl>
                         <dt>Tarih</dt>
-                        <dd>{formatDate(event.date)}</dd>
-                        <dt>Saat</dt>
-                        <dd>{event.time}</dd>
+                        <dd>
+                            <time dateTime={`${event.date}T${event.time}`}>
+                                {formatDate(event.date)}, {event.time}
+                            </time>
+                        </dd>
                         <dt>Yer</dt>
                         <dd>{event.location}</dd>
                         <dt>Kategori</dt>
-                        <dd><span className="kart-kategori">{event.category}</span></dd>
+                        <dd>{event.category}</dd>
                         <dt>Kontenjan</dt>
                         <dd>{event.capacity} kişi</dd>
                     </dl>
-                </aside>
+                </section>
             </div>
-            <p style={{ marginTop: "1.5rem" }}>{event.description}</p>
-            <div className="form-baglantilar" style={{ marginTop: "1.5rem" }}>
-                <Link to="/events" className="buton">
-                    &larr; Listeye dön
+            <h2>Açıklama</h2>
+            <p>{event.description}</p>
+            <p className="form-butonlar">
+                <Link className="buton" to="/events">
+                    ← Listeye dön
                 </Link>
-                <Link to={`/admin/${event.id}/edit`} className="buton">
+                <Link className="buton" to={`/admin/${event.id}/edit`}>
                     Bu etkinliği güncelle
                 </Link>
-            </div>
+            </p>
         </article>
     );
 }

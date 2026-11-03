@@ -1,5 +1,4 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { Link } from "react-router-dom";
 import type { EventFormData, EventFormErrors, Category } from "../../types/campus-event";
 import { validateEvent } from "../../utils/validate-event";
 
@@ -15,9 +14,7 @@ function EventForm({ initialData, submitText, onSubmit }: EventFormProps) {
     const [data, setData] = useState<EventFormData>(initialData);
     const [errors, setErrors] = useState<EventFormErrors>({});
 
-    function handleChange(
-        e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    ) {
+    function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         setData({
             ...data,
             [e.target.name]: e.target.value,
@@ -34,21 +31,20 @@ function EventForm({ initialData, submitText, onSubmit }: EventFormProps) {
     }
 
     return (
-        <form className="form" onSubmit={handleSubmit} noValidate>
-            <div className="alan">
-                <label htmlFor="title">Etkinlik adı</label>
+        <form className="form" noValidate onSubmit={handleSubmit}>
+            <p className="alan">
+                <label htmlFor="title">Etkinlik Adı</label>
                 <input
+                    type="text"
                     id="title"
                     name="title"
-                    type="text"
                     value={data.title}
                     onChange={handleChange}
                     aria-invalid={errors.title ? true : undefined}
                 />
                 <span className="hata-metni">{errors.title}</span>
-            </div>
-
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="category">Kategori</label>
                 <select
                     id="category"
@@ -57,7 +53,7 @@ function EventForm({ initialData, submitText, onSubmit }: EventFormProps) {
                     onChange={handleChange}
                     aria-invalid={errors.category ? true : undefined}
                 >
-                    <option value="">Seçin...</option>
+                    <option value="">Seçiniz</option>
                     {CATEGORIES.map((cat) => (
                         <option key={cat} value={cat}>
                             {cat}
@@ -65,103 +61,72 @@ function EventForm({ initialData, submitText, onSubmit }: EventFormProps) {
                     ))}
                 </select>
                 <span className="hata-metni">{errors.category}</span>
-            </div>
-
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="date">Tarih</label>
                 <input
+                    type="date"
                     id="date"
                     name="date"
-                    type="date"
                     value={data.date}
                     onChange={handleChange}
                     aria-invalid={errors.date ? true : undefined}
                 />
                 <span className="hata-metni">{errors.date}</span>
-            </div>
-
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="time">Saat</label>
                 <input
+                    type="time"
                     id="time"
                     name="time"
-                    type="time"
                     value={data.time}
                     onChange={handleChange}
                     aria-invalid={errors.time ? true : undefined}
                 />
                 <span className="hata-metni">{errors.time}</span>
-            </div>
-
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="location">Yer</label>
                 <input
+                    type="text"
                     id="location"
                     name="location"
-                    type="text"
                     value={data.location}
                     onChange={handleChange}
                     aria-invalid={errors.location ? true : undefined}
                 />
                 <span className="hata-metni">{errors.location}</span>
-            </div>
-
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="capacity">Kontenjan</label>
                 <input
+                    type="number"
                     id="capacity"
                     name="capacity"
-                    type="number"
-                    min="1"
-                    max="1000"
                     value={data.capacity}
                     onChange={handleChange}
                     aria-invalid={errors.capacity ? true : undefined}
                 />
                 <span className="hata-metni">{errors.capacity}</span>
-            </div>
-
-            <div className="alan">
+            </p>
+            <p className="alan">
                 <label htmlFor="description">Açıklama</label>
                 <textarea
                     id="description"
                     name="description"
-                    rows={4}
+                    rows={5}
                     value={data.description}
                     onChange={handleChange}
                     aria-invalid={errors.description ? true : undefined}
                 />
                 <span className="hata-metni">{errors.description}</span>
-            </div>
-
-            <div className="alan">
-                <label htmlFor="image">Afiş URL (isteğe bağlı)</label>
-                <input
-                    id="image"
-                    name="image"
-                    type="url"
-                    placeholder="https://..."
-                    value={data.image || ""}
-                    onChange={handleChange}
-                />
-            </div>
-
-            <div className="form-butonlar">
+            </p>
+            <p className="form-butonlar">
                 <button type="submit" className="buton">
                     {submitText}
                 </button>
-                <Link
-                    to="/admin"
-                    className="buton"
-                    style={{
-                        background: "transparent",
-                        color: "var(--renk-metin)",
-                        borderColor: "var(--renk-kenar)",
-                    }}
-                >
-                    İptal
-                </Link>
-            </div>
+            </p>
         </form>
     );
 }

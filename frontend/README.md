@@ -1,32 +1,116 @@
-# React + TypeScript + Vite
+# Kampüs Etkinlikleri — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Bu proje, **Sprint 6 ve Vize Teslimi** kapsamında geliştirilmiş React tabanlı modern bir kampüs etkinlikleri yönetim uygulamasıdır.
 
-Currently, two official plugins are available:
+Canlı Yayın (Vercel): [https://engindaglayan-frontend.vercel.app](https://engindaglayan-frontend.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Öğrenci Adı:** Engin Dağlayan
+- **Öğrenci Numarası:** 2416501069
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Başlangıç ve Kurulum
 
-## Expanding the Oxlint configuration
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları uygulayın:
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### 1. Bağımlılıkları Yükleme
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Geliştirme Sunucusunu Başlatma
+```bash
+npm run dev
+```
+Uygulama varsayılan olarak `http://localhost:5173` adresinde çalışacaktır.
+
+### 3. Derleme (Production Build)
+```bash
+npm run build
+```
+Derleme çıktısı `dist/` klasörüne oluşturulur.
+
+### 4. Kod Denetimi (Lint)
+```bash
+npm run lint
+```
+
+---
+
+## 📁 Proje Klasör Yapısı
+
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── layout/       # Header, Navigation, Footer
+│   │   ├── events/       # EventCard, EventList, EventFilter, EventDetail
+│   │   └── forms/        # EventForm
+│   ├── context/          # EventsContext.tsx (Global state ve CRUD metodları)
+│   ├── pages/            # 10 adet sayfa bileşeni
+│   │   ├── HomePage.tsx
+│   │   ├── EventsPage.tsx
+│   │   ├── EventDetailPage.tsx
+│   │   ├── AdminPage.tsx
+│   │   ├── AddEventPage.tsx
+│   │   ├── EditEventPage.tsx
+│   │   ├── LoginPage.tsx
+│   │   ├── RegisterPage.tsx
+│   │   ├── ForgotPasswordPage.tsx
+│   │   └── NotFoundPage.tsx
+│   ├── data/             # Başlangıç etkinlik verileri (events.ts)
+│   ├── types/            # TypeScript tip tanımları (campus-event.ts)
+│   ├── utils/            # filter-events, format-date, validate-event
+│   ├── App.tsx           # Rotaları içeren ana uygulama kabuğu
+│   ├── App.css           # Tasarım ve duyarlı (responsive) CSS kuralları
+│   ├── index.css
+│   └── main.tsx          # Giriş noktası (BrowserRouter ve EventsProvider)
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+---
+
+## 🗺️ Route (Yönlendirme) Listesi
+
+| Adres | Sayfa | Açıklama |
+|---|---|---|
+| `/` | `HomePage` | Yaklaşan 2 etkinliği ve tüm etkinliklere geçiş butonunu listeler. |
+| `/events` | `EventsPage` | Arama ve kategori filtresi ile tüm etkinlikleri listeler. |
+| `/events/:id` | `EventDetailPage` | İlgili etkinliğin afişini, künyesini ve detaylarını gösterir. |
+| `/admin` | `AdminPage` | Tüm etkinliklerin yönetim tablosu (Düzenle, Sil, Yeni Etkinlik). |
+| `/admin/new` | `AddEventPage` | Yeni etkinlik ekleme formu. |
+| `/admin/:id/edit` | `EditEventPage` | Mevcut bir etkinliği güncelleme formu. |
+| `/login` | `LoginPage` | Doğrulamalı kullanıcı giriş sayfası. |
+| `/register` | `RegisterPage` | Doğrulamalı yeni kullanıcı kayıt sayfası. |
+| `/forgot-password` | `ForgotPasswordPage` | Şifre sıfırlama bağlantısı talep sayfası. |
+| `*` | `NotFoundPage` | Tanımsız adresler için 404 sayfası. |
+
+---
+
+## ✨ Özellikler ve Mimari
+
+1. **Dinamik Başlık (Header):**
+   - Açık olan sayfaya ve seçili etkinliğe göre `<h1>` başlığı ve açıklama metni otomatik güncellenir.
+   - Tarayıcı sekme başlığı (`document.title`) etkinliğin veya sayfanın adına göre dinamik olarak ayarlanır.
+
+2. **React Router DOM v7:**
+   - Sayfa yenilenmesi olmadan `NavLink` ve `Link` ile hızlı geçiş.
+   - Menüde aktif olan sayfayı otomatik vurgulayan `aria-current="page"` desteği.
+
+3. **Merkezi Durum Yönetimi (EventsContext):**
+   - Tüm sayfaların paylaştığı tek veri havuzu.
+   - `addEvent`, `updateEvent`, `deleteEvent` fonksiyonları ile tam CRUD desteği.
+   - Yönetim panelinden yapılan ekleme, silme ve düzenlemelerin tüm sayfalara eşzamanlı yansıması.
+
+4. **Kapsamlı Form Doğrulama (Validation):**
+   - **Etkinlik Formu:** 7 alan için kurallar (ad &ge; 3 karakter, kategori zorunlu, tarih/saat/yer zorunlu, kontenjan 1-1000 arası tam sayı, açıklama &ge; 10 karakter).
+   - **Kullanıcı Girişi:** `@` içeren geçerli e-posta ve en az 6 karakterli şifre.
+   - **Kayıt Formu:** Ad-soyad (&ge; 3 karakter), e-posta, şifre ve şifrelerin birbiriyle eşleşmesi kontrolü.
+   - **Şifremi Unuttum:** E-posta format doğrulaması ve demo bildirim mesajı.
+
+5. **Duyarlı (Responsive) Mobil Tasarım:**
+   - 360px - 699px genişliğindeki mobil cihazlarda yönetim tablosu otomatik olarak kart düzenine geçer.
+   - 700px ve 1000px üzeri ekranlarda sırasıyla 2 ve 3 sütunlu ızgara (grid) yerleşimi kullanılır.
