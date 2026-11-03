@@ -5,7 +5,7 @@ import { findEventById } from "../../utils/filter-events";
 
 const routesMeta = [
     { path: "/", title: "Kampüs Etkinlikleri", text: "Fakültedeki seminer, atölye ve söyleşileri tek yerden takip edin." },
-    { path: "/events", title: "Tüm Etkinlikler", text: "Ekim ayında kampüste düzenlenen etkinlikler." },
+    { path: "/events", title: "Tüm Etkinlikler", text: "Kampüste düzenlenen etkinlikler." },
     { path: "/admin", title: "Etkinlik Yönetimi" },
     { path: "/admin/new", title: "Etkinlik Ekle" },
     { path: "/login", title: "Giriş Yap" },
